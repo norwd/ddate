@@ -1,5 +1,7 @@
 # ddate
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/norwd/ddate.svg)](https://pkg.go.dev/github.com/norwd/ddate)
+
 `ddate` converts Gregorian dates to Discordian dates. It is a Go implementation
 of the classic command in `util-linux-ng`.
 
