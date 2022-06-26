@@ -1,3 +1,8 @@
+// ddate is a command line tool for converting dates from the Gregorian Calendar
+// to the Discordian Calendar.
+//
+//     go install github.com/norwd/ddate@latest
+//
 // Name
 //
 // ddate - converts Gregorian dates to Discordian dates.
