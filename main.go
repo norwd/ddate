@@ -9,7 +9,77 @@
 //
 // Synopsis
 //
+// Usage:
+//
 //     ddate [+format] [date]
+//
+// Options:
+//
+// Full name of the day of the week (i.e. Sweetmorn)
+//
+//     %A
+//
+// Abbreviated name of the day of the week (i.e. SM)
+//
+//     %a
+//
+// Full name of the season (i.e. Chaos)
+//
+//     %B
+//
+// Abbreviated name of the day of the week (i.e. Chs)
+//
+//     %b
+//
+// Ordinal number of the day in the season (i.e. 23)
+//
+//     %d
+//
+// Cardinal number of the day in the season (i.e. 23rd)
+//
+//     %e
+//
+// Ordinal year of our lady of of discord (i.e. 3161)
+//
+//     %Y
+//
+// Cardinal year of our lady of discord (i.e. 3161st)
+//
+//     %y
+//
+// Name of the current Holyday, if any
+//
+//     %H
+//
+// Magic code to prevent the remainder of the format being printed unless the date is a
+// Holyday.
+//
+//     %N
+//
+// Newline character.
+//
+//     %n
+//
+// Tab character.
+//
+//     %t
+//
+// Percent sign character.
+//
+//     %%
+//
+// Number of days remaining until X-Day from the given date.
+//
+//     %X
+//
+// Used to enclose the part of the string which is to be replaced with the words
+// "St. Tib's Day" if the current day is St. Tib's Day.
+//
+//     %{ and %}
+//
+// Try it and see...
+//
+//     %.
 //
 // Description
 //
@@ -22,70 +92,7 @@
 //
 // If a format string is specified, the Discordian date will be permitted in a
 // format specified by the string. This mechanism works similarly to the format
-// string mechanism of date(1), only almost completely different. The fields
-// are:
-//
-//     %A
-//
-//     Full name of the day of the week (i.e. Sweetmorn)
-//
-//     %a
-//
-//     Abbreviated name of the day of the week (i.e. SM)
-//
-//     %B
-//
-//     Full name of the season (i.e. Chaos)
-//
-//     %b
-//
-//     Abbreviated name of the day of the week (i.e. Chs)
-//
-//     %d
-//
-//     Ordinal number of the day in the season (i.e. 23)
-//
-//     %e
-//
-//     Cardinal number of the day in the season (i.e. 23rd)
-//
-//     %Y
-//
-//     Ordinal year of our lady of of discord (i.e. 3161)
-//
-//     %y
-//
-//     Cardinal year of our lady of discord (i.e. 3161st)
-//
-//     %H
-//
-//     Name of the current Holyday, if any
-//
-//     %N
-//
-//     Magic code to prevent the remainder of the format being printed unless
-//     the date is a Holyday.
-//
-//     %n
-//
-//     Newline character.
-//
-//     %t
-//
-//     Tab character.
-//
-//     %X
-//
-//     Number of days remaining until X-Day from the given date.
-//
-//     %{ and %}
-//
-//     Used to enclose the part of the string which is to be replaced with the
-//     words "St. Tib's Day" if the current day is St. Tib's Day.
-//
-//     %.
-//
-//     Try it and see...
+// string mechanism of date(1), only almost completely different.
 //
 // Examples
 //
