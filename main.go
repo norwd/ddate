@@ -96,15 +96,26 @@
 //
 // Examples
 //
+// Without any arguments, ddate prints today's Discordian Date according to the
+// default format.
+//
 //     $ ddate
 //     > Sweetmorn, Bureaucracy 42, 3161 YOLD
+//
+// A custom format can be specified with a plus sign and the percent sign escape
+// codes listed above.
 //
 //     $ ddate +"Today is %{%A, the %e of %B%}, %Y. %N%nCelebrate %H!"
 //     > Today is Sweetmorn, the 42nd of Bureaucracy, 3161.
 //
+// A custom date can specified (with or without a custom format) as DD MM YYYY.
+//
 //     $ ddate +"Today is %{%A, the %e of %B%}, %Y. %N%nCelebrate %H!" 26 9 1995
 //     > Today is Prickle-Prickle, the 50th of Bureaucracy, 3161.
 //     > Celebrate Bureflux
+//
+// If the date is February 29th, the Special St. Tib's Day formatters are used
+// to display "St. Tib's Day".
 //
 //     $ ddate +"Today is %{%A, the %e of %B%}, %Y. %N%nCelebrate %H!" 29 2 1996
 //     > Today is St. Tib's Day, 3162.
