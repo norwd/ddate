@@ -1,5 +1,6 @@
 # ddate
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/norwd/ddate)](https://goreportcard.com/report/github.com/norwd/ddate)
 [![Go Reference](https://pkg.go.dev/badge/github.com/norwd/ddate.svg)](https://pkg.go.dev/github.com/norwd/ddate)
 
 `ddate` converts Gregorian dates to Discordian dates. It is a Go implementation
