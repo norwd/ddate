@@ -13,7 +13,7 @@
 //
 //     ddate [+format] [date]
 //
-// Options:
+// Formatting Options:
 //
 //     - %A formats the full name of the day of the week (i.e. Sweetmorn).
 //     - %a formats the abbreviated name of the day of the week (i.e. SM).
