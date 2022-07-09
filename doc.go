@@ -15,71 +15,25 @@
 //
 // Options:
 //
-// Full name of the day of the week (i.e. Sweetmorn)
-//
-//     %A
-//
-// Abbreviated name of the day of the week (i.e. SM)
-//
-//     %a
-//
-// Full name of the season (i.e. Chaos)
-//
-//     %B
-//
-// Abbreviated name of the day of the week (i.e. Chs)
-//
-//     %b
-//
-// Ordinal number of the day in the season (i.e. 23)
-//
-//     %d
-//
-// Cardinal number of the day in the season (i.e. 23rd)
-//
-//     %e
-//
-// Ordinal year of our lady of of discord (i.e. 3161)
-//
-//     %Y
-//
-// Cardinal year of our lady of discord (i.e. 3161st)
-//
-//     %y
-//
-// Name of the current Holyday, if any
-//
-//     %H
-//
-// Magic code to prevent the remainder of the format being printed unless the date is a
-// Holyday.
-//
-//     %N
-//
-// Newline character.
-//
-//     %n
-//
-// Tab character.
-//
-//     %t
-//
-// Percent sign character.
-//
-//     %%
-//
-// Number of days remaining until X-Day from the given date.
-//
-//     %X
-//
-// Used to enclose the part of the string which is to be replaced with the words
-// "St. Tib's Day" if the current day is St. Tib's Day.
-//
-//     %{ and %}
-//
-// Try it and see...
-//
-//     %.
+//     - %A formats the full name of the day of the week (i.e. Sweetmorn).
+//     - %a formats the abbreviated name of the day of the week (i.e. SM).
+//     - %B formats the full name of the season (i.e. Chaos).
+//     - %b formats the abbreviated name of the day of the week (i.e. Chs).
+//     - %d formats the ordinal number of the day in the season (i.e. 23).
+//     - %e formats the cardinal number of the day in the season (i.e. 23rd).
+//     - %Y formats the ordinal year of our lady of of discord (i.e. 3161).
+//     - %y formats the cardinal year of our lady of discord (i.e. 3161st).
+//     - %H formats the name of the current Holyday, if any (i.e. Confuflux).
+//     - %N is a magic code to prevent the remainder of the format string being
+//       printed unless the date is a Holyday.
+//     - %n formats a newline character.
+//     - %t formats a tab character.
+//     - %% formats a literal percent sign character.
+//     - %X formats the cardinal number of days remaining until X-Day from the
+//       given date.
+//     - %{ and %} are used to enclose the part of the string which is to be
+//       replaced with the words "St. Tib's Day" if the current day is St. Tib's Day.
+//     - %. Try it and see...
 //
 // Description
 //
