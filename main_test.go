@@ -18,13 +18,12 @@ func TestParseDDMMYYYY(t *testing.T) {
 		{
 			name: "All Empty",
 			have: [3]string{"", "", ""},
-			want: [3]int{},
 		},
-		//{
-		//	name: "All Zeros",
-		//	have: [3]string{"0", "0", "0"},
-		//	want: [3]int{0, 0, 0},
-		//},
+		{
+			name: "All Zeros",
+			have: [3]string{"0", "0", "0"},
+			want: [3]int{30, 11, -1},
+		},
 		{
 			name: "Valid Date",
 			have: [3]string{"6", "8", "1999"},
@@ -34,6 +33,16 @@ func TestParseDDMMYYYY(t *testing.T) {
 			name: "Valid Date Leading Zeros",
 			have: [3]string{"06", "08", "01999"},
 			want: [3]int{6, 8, 1999},
+		},
+		{
+			name: "Invalid Numbers",
+			have: [3]string{"_6", "_8", "_1999"},
+			want: [3]int{0, 0, 0},
+		},
+		{
+			name: "Invalid Date",
+			have: [3]string{"32", "10", "2022"},
+			want: [3]int{1, 11, 2022},
 		},
 	}
 
