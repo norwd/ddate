@@ -19,7 +19,10 @@ var backend = func(string, time.Time) (string, error) {
 
 // errorf prints the formatted error message to stderr and exits with error 1.
 func errorf(format string, args ...interface{}) {
-	fmt.Fprintf(os.Stderr, format, args...)
+	err := fmt.Sprintf(format, args...)
+
+	fmt.Fprintln(os.Stderr, err)
+
 	os.Exit(1)
 }
 
@@ -77,14 +80,14 @@ func main() {
 		if date, err = parseDDMMYYYY(args[0], args[1], args[2]); err != nil {
 			errorf("%s: %s", self, err)
 		}
-	} else if argc < 3 {
+	} else if argc > 3 {
 		errorf("%s: too many arguments for DD MM YYYY", self)
-	} else if argc > 0 {
+	} else if argc < 0 {
 		errorf("%s: not enough arguments for DD MM YYYY", self)
 	}
 
 	// Debug
-	fmt.Printf("format: %q, date: %#v", format, date)
+	fmt.Printf("format: %q, date: %#v\n", format, date)
 
 	// Format the date conversion
 	if date, err := backend(format, date); err != nil {
