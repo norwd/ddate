@@ -61,9 +61,6 @@ func main() {
 	// Trim the leading directory
 	self = filepath.Base(self)
 
-	// Debug
-	fmt.Printf("self: %q, args: %#v\n", self, args)
-
 	// Determine date format
 	if argc := len(args); argc > 1 && strings.HasPrefix("+", args[0]) {
 		// Trim the plus sing from the format
@@ -85,9 +82,6 @@ func main() {
 	} else if argc < 0 {
 		errorf("%s: not enough arguments for DD MM YYYY", self)
 	}
-
-	// Debug
-	fmt.Printf("format: %q, date: %#v\n", format, date)
 
 	// Format the date conversion
 	if date, err := backend(format, date); err != nil {
