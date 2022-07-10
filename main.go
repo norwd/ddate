@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -60,7 +61,27 @@ func main() {
 	// Debug
 	fmt.Printf("self: %q, args: %#v\n", self, args)
 
-	// Determine arg actions
+	// Determine date format
+	if argc := len(args); argc > 1 && strings.HasPrefix("+", args[0]) {
+		// Trim the plus sing from the format
+		format = strings.TrimPrefix(args[0], "+")
+
+		// Reslice arguments to skip the format arguments
+		args = args[1:]
+	}
+
+	// Determine date to use
+	if argc := len(args); argc == 3 {
+		var err error
+
+		if date, err = parseDDMMYYYY(args[0], args[1], args[2]); err != nil {
+			errorf("%s: %s", self, err)
+		}
+	} else if argc < 3 {
+		errorf("%s: too many arguments for DD MM YYYY", self)
+	} else if argc > 0 {
+		errorf("%s: not enough arguments for DD MM YYYY", self)
+	}
 
 	// Debug
 	fmt.Printf("format: %q, date: %#v", format, date)
