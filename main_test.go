@@ -58,39 +58,39 @@ func TestParseDDMMYYYY(t *testing.T) {
 			date, err := parseDDMMYYYY(day, month, year)
 
 			// Assert
-			if want, e := strconv.Atoi(day); e != nil {
-				if want := e.Error(); err == nil {
+			if _, want := strconv.Atoi(day); want != nil {
+				if want := want.Error(); err == nil {
 					t.Fatalf("have nil, want %q", want)
 				} else if have := err.Error(); have != want {
 					t.Fatalf("have %q, want %q", have, want)
 				}
 
 				return // don't keep testing, expected failure detected
-			} else if have := date.Day(); have != want {
+			} else if have, want := date.Day(), test.want[0]; have != want {
 				t.Fatalf("have %d, want %d", have, want)
 			}
 
-			if want, e := strconv.Atoi(month); e != nil {
-				if want := e.Error(); err == nil {
+			if _, want := strconv.Atoi(month); want != nil {
+				if want := want.Error(); err == nil {
 					t.Fatalf("have nil, want %q", want)
 				} else if have := err.Error(); have != want {
 					t.Fatalf("have %q, want %q", have, want)
 				}
 
 				return // don't keep testing, expected failure detected
-			} else if have := int(date.Month()); have != want {
+			} else if have, want := int(date.Month()), test.want[1]; have != want {
 				t.Fatalf("have %d, want %d", have, want)
 			}
 
-			if want, e := strconv.Atoi(year); e != nil {
-				if want := e.Error(); err == nil {
+			if _, want := strconv.Atoi(year); want != nil {
+				if want := want.Error(); err == nil {
 					t.Fatalf("have nil, want %q", want)
 				} else if have := err.Error(); have != want {
 					t.Fatalf("have %q, want %q", have, want)
 				}
 
 				return // don't keep testing, expected failure detected
-			} else if have := date.Year(); have != want {
+			} else if have, want := date.Year(), test.want[2]; have != want {
 				t.Fatalf("have %d, want %d", have, want)
 			}
 		})
