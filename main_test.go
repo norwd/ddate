@@ -64,6 +64,8 @@ func TestParseDDMMYYYY(t *testing.T) {
 				} else if have := err.Error(); have != want {
 					t.Fatalf("have %q, want %q", have, want)
 				}
+
+				return // don't keep testing, expected failure detected
 			} else if have := date.Day(); have != want {
 				t.Fatalf("have %d, want %d", have, want)
 			}
@@ -74,6 +76,8 @@ func TestParseDDMMYYYY(t *testing.T) {
 				} else if have := err.Error(); have != want {
 					t.Fatalf("have %q, want %q", have, want)
 				}
+
+				return // don't keep testing, expected failure detected
 			} else if have := int(date.Month()); have != want {
 				t.Fatalf("have %d, want %d", have, want)
 			}
@@ -84,6 +88,8 @@ func TestParseDDMMYYYY(t *testing.T) {
 				} else if have := err.Error(); have != want {
 					t.Fatalf("have %q, want %q", have, want)
 				}
+
+				return // don't keep testing, expected failure detected
 			} else if have := date.Year(); have != want {
 				t.Fatalf("have %d, want %d", have, want)
 			}
