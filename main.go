@@ -33,7 +33,7 @@ var (
 	stderr io.Writer = os.Stderr
 
 	// stdout is a writeable output stream.
-	stdout io.Writer = os.Sdtout
+	stdout io.Writer = os.Stdout
 )
 
 // errorf prints the formatted error message to stderr and exits with error 1.
