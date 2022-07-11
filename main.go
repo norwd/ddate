@@ -96,7 +96,7 @@ func main() {
 		}
 	} else if argc > 3 {
 		errorf("%s: too many arguments for DD MM YYYY", self)
-	} else if argc < 0 {
+	} else if argc < 3 && argc != 0 {
 		errorf("%s: not enough arguments for DD MM YYYY", self)
 	}
 
