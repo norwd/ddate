@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"strconv"
 	"strings"
 	"testing"
@@ -10,23 +11,41 @@ import (
 
 func TestErrorf(t *testing.T) {
 	tests := []struct {
-		name string
-		want string
-		have string
-		args []any
+		name string // name of the test case
+		want string // expected error message
+		have string // input message
+		args []any  // format arguments
 	}{
 		{
-			name: "",
-			want: "",
-			have: "",
-			args: []any{},
+			name: "Empty Error Message",
+		},
+		{
+			name: "Unformatted Error Message",
+			want: "Expected error message",
+			have: "Expected error message",
+		},
+		{
+			name: "Formatted Error Message",
+			want: "Expected error message",
+			have: "Expected %s message",
+			args: []any{"error"},
 		},
 	}
 
 	for _, test := range tests {
+		// shadow loop var to prevent nasty bugs
 		test := test
 
-		t.Run(test.name, func(t *testing.T) {
+		// trim whitespace from name of test case
+		name := strings.Map(func(r rune) rune {
+			if unicode.IsSpace(r) {
+				return -1
+			}
+
+			return r
+		}, test.name)
+
+		t.Run(name, func(t *testing.T) {
 			// Arrange
 			var buf bytes.Buffer
 			var exit int
@@ -38,7 +57,7 @@ func TestErrorf(t *testing.T) {
 			errorf(test.have, test.args...)
 
 			// Assert
-			if have, want := buf.String(), test.want; have != want {
+			if have, want := buf.String(), fmt.Sprintln(test.want); have != want {
 				t.Errorf("error message: have %q, want %q", have, want)
 			}
 
