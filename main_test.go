@@ -361,6 +361,17 @@ func TestMain(t *testing.T) {
 			exit:        1,
 			callBackend: false,
 		},
+		{
+			name:        "Format And DD MM YYYY Backend Failure",
+			self:        "ddate",
+			args:        []string{"+Some fancy format string", "10", "11", "1999"},
+			date:        "",
+			want:        "ddate: expected backend error",
+			ptrn:        "Some fancy format string",
+			time:        time.Date(1999, 11, 10, 0, 0, 0, 0, time.Local),
+			exit:        1,
+			callBackend: true,
+		},
 	}
 
 	for _, test := range tests {
