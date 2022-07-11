@@ -68,6 +68,52 @@ func TestErrorf(t *testing.T) {
 	}
 }
 
+func TestPrintln(t *testing.T) {
+	tests := []struct {
+		name string // name of the test case
+		want string // expected message
+		have string // input message
+	}{
+		{
+			name: "Empty Message",
+		},
+		{
+			name: "Simple Message",
+			want: "This is a simple message",
+			have: "This is a simple message",
+		},
+	}
+
+	for _, test := range tests {
+		// shadow loop var to prevent nasty bugs
+		test := test
+
+		// trim whitespace from name of test case
+		name := strings.Map(func(r rune) rune {
+			if unicode.IsSpace(r) {
+				return -1
+			}
+
+			return r
+		}, test.name)
+
+		t.Run(name, func(t *testing.T) {
+			// Arrange
+			var buf bytes.Buffer
+
+			defer mockAndLockStdout(&buf).Unlock()
+
+			// Act
+			println(test.have)
+
+			// Assert
+			if have, want := buf.String(), fmt.Sprintln(test.want); have != want {
+				t.Errorf("error message: have %q, want %q", have, want)
+			}
+		})
+	}
+}
+
 func TestParseDDMMYYYY(t *testing.T) {
 	tests := []struct {
 		name string    // name of the test case
