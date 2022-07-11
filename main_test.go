@@ -230,54 +230,70 @@ func TestParseDDMMYYYY(t *testing.T) {
 
 func TestMain(t *testing.T) {
 	tests := []struct {
-		name string    // name of the test case
-		self string    // name of the application
-		args []string  // arguments to pass to main
-		date string    // date to return from the backend (if empty expect err)
-		want string    // expected output
-		ptrn string    // expected format pattern
-		time time.Time // expected time to pass to the backend
-		exit int       // expected error code (signals where output is expected)
+		name        string    // name of the test case
+		self        string    // name of the application
+		args        []string  // arguments to pass to main
+		date        string    // date to return from the backend (if empty expect err)
+		want        string    // expected output
+		ptrn        string    // expected format pattern
+		time        time.Time // expected time to pass to the backend
+		exit        int       // expected error code (signals where output is expected)
+		callBackend bool      // should the backend expect to be called?
 	}{
 		{
-			name: "No Args",
-			self: "ddate",
-			args: []string{},
-			date: "Today's discordian date",
-			want: "Today's discordian date",
-			ptrn: defaultFormat,
-			time: time.Now(),
-			exit: 0,
+			name:        "No Args",
+			self:        "ddate",
+			args:        []string{},
+			date:        "Today's discordian date",
+			want:        "Today's discordian date",
+			ptrn:        defaultFormat,
+			time:        time.Now(),
+			exit:        0,
+			callBackend: true,
 		},
 		{
-			name: "Only Format",
-			self: "ddate",
-			args: []string{"+Some fancy format string"},
-			date: "Today's discordian date",
-			want: "Today's discordian date",
-			ptrn: "Some fancy format string",
-			time: time.Now(),
-			exit: 0,
+			name:        "Only Format",
+			self:        "ddate",
+			args:        []string{"+Some fancy format string"},
+			date:        "Today's discordian date",
+			want:        "Today's discordian date",
+			ptrn:        "Some fancy format string",
+			time:        time.Now(),
+			exit:        0,
+			callBackend: true,
 		},
 		{
-			name: "Only DD MM YYYY",
-			self: "ddate",
-			args: []string{"10", "11", "1999"},
-			date: "The discordian date for 1999-11-10",
-			want: "The discordian date for 1999-11-10",
-			ptrn: defaultFormat,
-			time: time.Date(1999, 11, 10, 0, 0, 0, 0, time.Local),
-			exit: 0,
+			name:        "Only DD MM YYYY",
+			self:        "ddate",
+			args:        []string{"10", "11", "1999"},
+			date:        "The discordian date for 1999-11-10",
+			want:        "The discordian date for 1999-11-10",
+			ptrn:        defaultFormat,
+			time:        time.Date(1999, 11, 10, 0, 0, 0, 0, time.Local),
+			exit:        0,
+			callBackend: true,
 		},
 		{
-			name: "Format And DD MM YYYY",
-			self: "ddate",
-			args: []string{"+Some fancy format string", "10", "11", "1999"},
-			date: "The discordian date for 1999-11-10",
-			want: "The discordian date for 1999-11-10",
-			ptrn: "Some fancy format string",
-			time: time.Date(1999, 11, 10, 0, 0, 0, 0, time.Local),
-			exit: 0,
+			name:        "Format And DD MM YYYY",
+			self:        "ddate",
+			args:        []string{"+Some fancy format string", "10", "11", "1999"},
+			date:        "The discordian date for 1999-11-10",
+			want:        "The discordian date for 1999-11-10",
+			ptrn:        "Some fancy format string",
+			time:        time.Date(1999, 11, 10, 0, 0, 0, 0, time.Local),
+			exit:        0,
+			callBackend: true,
+		},
+		{
+			name:        "Only Argument Is Invalid Format",
+			self:        "ddate",
+			args:        []string{"Some non-format string"},
+			date:        "",
+			want:        "ddate: not enough arguments for DD MM YYYY",
+			ptrn:        defaultFormat,
+			time:        time.Now(),
+			exit:        1,
+			callBackend: false,
 		},
 	}
 
@@ -335,14 +351,34 @@ func TestMain(t *testing.T) {
 				exitCalls++
 
 				exit = code
+
+				// simulate exit
+				panic("exit")
 			}).Unlock()
 
 			// Act
-			main()
+			func() {
+				// catch "fake" panic
+				defer func() {
+					if err := recover(); err != nil {
+						if err != "exit" {
+							panic(err)
+						}
+					}
+				}()
+
+				main()
+			}()
 
 			// Assert
-			if backendCalls != 1 {
-				t.Errorf("backend called %d times, want once", backendCalls)
+			if test.callBackend {
+				if backendCalls != 1 {
+					t.Errorf("backend called %d times, want once", backendCalls)
+				}
+			} else {
+				if backendCalls != 0 {
+					t.Errorf("backend called was called %d times, want 0", backendCalls)
+				}
 			}
 
 			if test.exit > 0 && exitCalls != 1 {
