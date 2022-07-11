@@ -184,38 +184,42 @@ func TestParseDDMMYYYY(t *testing.T) {
 			// Assert
 			if _, want := strconv.Atoi(day); want != nil {
 				if want := want.Error(); err == nil {
-					t.Fatalf("have nil, want %q", want)
+					t.Fatalf("error: have nil, want %q", want)
 				} else if have := err.Error(); have != want {
-					t.Fatalf("have %q, want %q", have, want)
+					t.Fatalf("error: have %q, want %q", have, want)
 				}
 
 				return // don't keep testing, expected failure detected
-			} else if have, want := date.Day(), test.want[0]; have != want {
-				t.Fatalf("have %d, want %d", have, want)
+			} else if have, want := date.Day(), test.want[0]; have != want && err == nil {
+				t.Fatalf("day: have %d, want %d", have, want)
 			}
 
 			if _, want := strconv.Atoi(month); want != nil {
 				if want := want.Error(); err == nil {
-					t.Fatalf("have nil, want %q", want)
+					t.Fatalf("error: have nil, want %q", want)
 				} else if have := err.Error(); have != want {
-					t.Fatalf("have %q, want %q", have, want)
+					t.Fatalf("error: have %q, want %q", have, want)
 				}
 
 				return // don't keep testing, expected failure detected
-			} else if have, want := int(date.Month()), test.want[1]; have != want {
-				t.Fatalf("have %d, want %d", have, want)
+			} else if have, want := int(date.Month()), test.want[1]; have != want && err == nil {
+				t.Fatalf("want: have %d, want %d", have, want)
 			}
 
 			if _, want := strconv.Atoi(year); want != nil {
 				if want := want.Error(); err == nil {
-					t.Fatalf("have nil, want %q", want)
+					t.Fatalf("error: have nil, want %q", want)
 				} else if have := err.Error(); have != want {
-					t.Fatalf("have %q, want %q", have, want)
+					t.Fatalf("error: have %q, want %q", have, want)
 				}
 
 				return // don't keep testing, expected failure detected
-			} else if have, want := date.Year(), test.want[2]; have != want {
-				t.Fatalf("have %d, want %d", have, want)
+			} else if have, want := date.Year(), test.want[2]; have != want && err == nil {
+				t.Fatalf("year: have %d, want %d", have, want)
+			}
+
+			if err != nil {
+				t.Fatalf("error: have %q, want nil", err)
 			}
 		})
 	}
