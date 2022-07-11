@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 	"unicode"
 )
 
@@ -221,6 +222,64 @@ func TestParseDDMMYYYY(t *testing.T) {
 			if err != nil {
 				t.Fatalf("error: have %q, want nil", err)
 			}
+		})
+	}
+}
+
+func TestMain(t *testing.T) {
+	tests := []struct {
+		name string   // name of the test case
+		self string   // name of the application
+		args []string // arguments to pass to main
+		want string   // expected output
+		exit int      // expected error code (signals where output is expected)
+	}{
+		{
+			name: "",
+			self: "",
+			args: []string{},
+			want: "",
+			exit: 0,
+		},
+	}
+
+	for _, test := range tests {
+		// shadow loop var to prevent nasty bugs
+		test := test
+
+		// trim whitespace from name of test case
+		name := strings.Map(func(r rune) rune {
+			if unicode.IsSpace(r) {
+				return -1
+			}
+
+			return r
+		}, test.name)
+
+		t.Run(name, func(t *testing.T) {
+			// Arrange
+			var errBuf, outBuf bytes.Buffer
+
+			defer mockAndLockStderr(&errBuf).Unlock()
+			defer mockAndLockStdout(&outBuf).Unlock()
+
+			defer mockAndLockSelf(test.self).Unlock()
+			defer mockAndLockArgs(test.args).Unlock()
+
+			defer mockAndLockBackend(func(format string, date time.Time) (string, error) {
+				t.Fatal("backend not mocked")
+
+				return "", nil
+			}).Unlock()
+
+			defer mockAndLockExit(func(code int) {
+				t.Fatal("exit not mocked")
+			}).Unlock()
+
+			// Act
+			main()
+
+			// Assert
 		})
 	}
 }
