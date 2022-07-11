@@ -140,8 +140,18 @@ func TestParseDDMMYYYY(t *testing.T) {
 			want: [3]int{6, 8, 1999},
 		},
 		{
-			name: "Invalid Numbers",
-			have: [3]string{"_6", "_8", "_1999"},
+			name: "Invalid Day",
+			have: [3]string{"_6", "8", "1999"},
+			want: [3]int{0, 0, 0},
+		},
+		{
+			name: "Invalid Month",
+			have: [3]string{"6", "_8", "1999"},
+			want: [3]int{0, 0, 0},
+		},
+		{
+			name: "Invalid Year",
+			have: [3]string{"6", "8", "_1999"},
 			want: [3]int{0, 0, 0},
 		},
 		{
