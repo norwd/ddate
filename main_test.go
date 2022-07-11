@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -228,11 +229,14 @@ func TestParseDDMMYYYY(t *testing.T) {
 
 func TestMain(t *testing.T) {
 	tests := []struct {
-		name string   // name of the test case
-		self string   // name of the application
-		args []string // arguments to pass to main
-		want string   // expected output
-		exit int      // expected error code (signals where output is expected)
+		name string    // name of the test case
+		self string    // name of the application
+		args []string  // arguments to pass to main
+		date string    // date to return from the backend (if empty expect err)
+		want string    // expected output
+		ptrn string    // expected format pattern
+		time time.Time // expected time to pass to the backend
+		exit int       // expected error code (signals where output is expected)
 	}{
 		{
 			name: "",
@@ -258,28 +262,71 @@ func TestMain(t *testing.T) {
 
 		t.Run(name, func(t *testing.T) {
 			// Arrange
-			var errBuf, outBuf bytes.Buffer
+			var errBuf, outBuf bytes.Buffer // fake streams
+			var backendCalls, exitCalls int // call counters
+			var exit int                    // record exit code
 
+			// mock io
 			defer mockAndLockStderr(&errBuf).Unlock()
 			defer mockAndLockStdout(&outBuf).Unlock()
 
+			// mock argv
 			defer mockAndLockSelf(test.self).Unlock()
 			defer mockAndLockArgs(test.args).Unlock()
 
+			// mock backend
 			defer mockAndLockBackend(func(format string, date time.Time) (string, error) {
-				t.Fatal("backend not mocked")
+				backendCalls++
 
-				return "", nil
+				if test.date == "" {
+					return "", errors.New("expected backend error")
+				}
+
+				return test.date, nil
 			}).Unlock()
 
+			// mock exit
 			defer mockAndLockExit(func(code int) {
-				t.Fatal("exit not mocked")
+				exitCalls++
+
+				exit = code
 			}).Unlock()
 
 			// Act
 			main()
 
 			// Assert
+			if backendCalls != 1 {
+				t.Errorf("backend called %d times, want once", backendCalls)
+			}
+
+			if exitCalls != 1 {
+				t.Errorf("exit called %d times, want once", exitCalls)
+			}
+
+			if test.exit == 0 {
+				// test expects success
+				if have, want := outBuf.String(), test.want; have != want {
+					t.Errorf("stdout: have %q, want %q", have, want)
+				}
+
+				if have, want := errBuf.String(), ""; have != want {
+					t.Errorf("stderr: have %q, want %q", have, want)
+				}
+			} else {
+				// test expects failure
+				if have, want := outBuf.String(), ""; have != want {
+					t.Errorf("stdout: have %q, want %q", have, want)
+				}
+
+				if have, want := errBuf.String(), test.want; have != want {
+					t.Errorf("stderr: have %q, want %q", have, want)
+				}
+			}
+
+			if have, want := exit, test.exit; have != want {
+				t.Errorf("exit code: have %d, want %d", have, want)
+			}
 		})
 	}
 }
