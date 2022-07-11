@@ -240,8 +240,18 @@ func TestMain(t *testing.T) {
 		exit int       // expected error code (signals where output is expected)
 	}{
 		{
+			name: "No Args",
+			self: "ddate",
+			args: []string{},
+			date: "Today's discordian date",
+			want: "Today's discordian date",
+			ptrn: defaultFormat,
+			time: time.Now(),
+			exit: 0,
+		},
+		{
 			name: "",
-			self: "",
+			self: "ddate",
 			args: []string{},
 			date: "",
 			want: "",
@@ -315,13 +325,15 @@ func TestMain(t *testing.T) {
 				t.Errorf("backend called %d times, want once", backendCalls)
 			}
 
-			if exitCalls != 1 {
+			if test.exit > 0 && exitCalls != 1 {
 				t.Errorf("exit called %d times, want once", exitCalls)
+			} else if test.exit == 0 && exitCalls != 0 {
+				t.Errorf("exit called was called %d times, want 0", exitCalls)
 			}
 
 			if test.exit == 0 {
 				// test expects success
-				if have, want := outBuf.String(), test.want; have != want {
+				if have, want := outBuf.String(), fmt.Sprintln(test.want); have != want {
 					t.Errorf("stdout: have %q, want %q", have, want)
 				}
 
@@ -334,7 +346,7 @@ func TestMain(t *testing.T) {
 					t.Errorf("stdout: have %q, want %q", have, want)
 				}
 
-				if have, want := errBuf.String(), test.want; have != want {
+				if have, want := errBuf.String(), fmt.Sprintln(test.want); have != want {
 					t.Errorf("stderr: have %q, want %q", have, want)
 				}
 			}
