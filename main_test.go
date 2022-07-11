@@ -289,7 +289,7 @@ func TestMain(t *testing.T) {
 			self:        "ddate",
 			args:        []string{"Some non-format string"},
 			date:        "",
-			want:        "ddate: not enough arguments for DD MM YYYY",
+			want:        "ddate: invalid format \"Some non-format string\"",
 			ptrn:        defaultFormat,
 			time:        time.Now(),
 			exit:        1,
