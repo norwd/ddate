@@ -242,7 +242,10 @@ func TestMain(t *testing.T) {
 			name: "",
 			self: "",
 			args: []string{},
+			date: "",
 			want: "",
+			ptrn: "",
+			time: time.Now(),
 			exit: 0,
 		},
 	}
