@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 	"testing"
@@ -281,6 +282,17 @@ func TestMain(t *testing.T) {
 			defer mockAndLockBackend(func(format string, date time.Time) (string, error) {
 				backendCalls++
 
+				// check that the format is as expected
+				if have, want := format, test.ptrn; have != want {
+					t.Errorf("wrong format: have %q, want %q", have, want)
+				}
+
+				// check that the date is within an hour of the expected date
+				if have, want := date, test.time; math.Abs(have.Sub(want).Hours()) > 1 {
+					t.Errorf("wrong date: have %s, want %s", have, want)
+				}
+
+				// if the expected date is empty, then an error is expected
 				if test.date == "" {
 					return "", errors.New("expected backend error")
 				}
