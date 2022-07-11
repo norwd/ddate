@@ -104,6 +104,6 @@ func main() {
 	if date, err := backend(format, date); err != nil {
 		errorf("%s: %s", self, err)
 	} else {
-		fmt.Println(date)
+		println(date)
 	}
 }

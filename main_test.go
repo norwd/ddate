@@ -1,13 +1,53 @@
 package main
 
 import (
+	"bytes"
 	"strconv"
 	"strings"
 	"testing"
 	"unicode"
 )
 
-// backend = func(string, time.Time) (string, error) {}
+func TestErrorf(t *testing.T) {
+	tests := []struct {
+		name string
+		want string
+		have string
+		args []any
+	}{
+		{
+			name: "",
+			want: "",
+			have: "",
+			args: []any{},
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+
+		t.Run(test.name, func(t *testing.T) {
+			// Arrange
+			var buf bytes.Buffer
+			var exit int
+
+			defer mockAndLockStderr(&buf).Unlock()
+			defer mockAndLockExit(func(code int) { exit = code }).Unlock()
+
+			// Act
+			errorf(test.have, test.args...)
+
+			// Assert
+			if have, want := buf.String(), test.want; have != want {
+				t.Errorf("error message: have %q, want %q", have, want)
+			}
+
+			if have, want := exit, 1; have != want {
+				t.Errorf("exit code: have %d, want %d", have, want)
+			}
+		})
+	}
+}
 
 func TestParseDDMMYYYY(t *testing.T) {
 	tests := []struct {
