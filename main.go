@@ -79,7 +79,7 @@ func main() {
 	format, date := defaultFormat, time.Now()
 
 	// Determine date format
-	if argc := len(args); argc > 1 && strings.HasPrefix("+", args[0]) {
+	if argc := len(args); argc > 0 && strings.HasPrefix(args[0], "+") {
 		// Trim the plus sing from the format
 		format = strings.TrimPrefix(args[0], "+")
 
