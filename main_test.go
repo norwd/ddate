@@ -13,6 +13,8 @@ import (
 )
 
 func TestErrorf(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name string // name of the test case
 		want string // expected error message
@@ -49,6 +51,8 @@ func TestErrorf(t *testing.T) {
 		}, test.name)
 
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+
 			// Arrange
 			var buf bytes.Buffer
 			var exit int
@@ -72,6 +76,8 @@ func TestErrorf(t *testing.T) {
 }
 
 func TestPrintln(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name string // name of the test case
 		want string // expected message
@@ -101,6 +107,8 @@ func TestPrintln(t *testing.T) {
 		}, test.name)
 
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+
 			// Arrange
 			var buf bytes.Buffer
 
@@ -118,6 +126,8 @@ func TestPrintln(t *testing.T) {
 }
 
 func TestParseDDMMYYYY(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name string    // name of the test case
 		have [3]string // input in DD, MM, and YYYY
@@ -178,6 +188,8 @@ func TestParseDDMMYYYY(t *testing.T) {
 		}, test.name)
 
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+
 			// Arrange
 			day, month, year := test.have[0], test.have[1], test.have[2]
 
@@ -229,6 +241,8 @@ func TestParseDDMMYYYY(t *testing.T) {
 }
 
 func TestMain(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name        string    // name of the test case
 		self        string    // name of the application
@@ -388,6 +402,8 @@ func TestMain(t *testing.T) {
 		}, test.name)
 
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+
 			// Arrange
 			var errBuf, outBuf bytes.Buffer // fake streams
 			var backendCalls, exitCalls int // call counters
