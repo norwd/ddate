@@ -11,9 +11,11 @@
 //
 // Usage:
 //
-//     ddate [+format] [date]
+//     ddate [+format] [<DD> <MM> <YYYY>]
 //
-// Formatting Options:
+// Options:
+//
+// There are a number of formatting directives available to format the date.
 //
 //     - %A formats the full name of the day of the week (i.e. Sweetmorn).
 //     - %a formats the abbreviated name of the day of the week (i.e. SM).
@@ -34,6 +36,10 @@
 //     - %{ and %} are used to enclose the part of the string which is to be
 //       replaced with the words "St. Tib's Day" if the current day is St. Tib's Day.
 //     - %. Try it and see...
+//
+// The date is optional and ddate will default to the current date if omitted,
+// however, if specified the date must be given in a space separated DD MM YYYY
+// format.
 //
 // Description
 //
