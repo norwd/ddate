@@ -10,6 +10,8 @@ import (
 	"testing"
 	"time"
 	"unicode"
+
+	"github.com/norwd/ddate/internal/os"
 )
 
 func TestErrorf(t *testing.T) {
@@ -57,8 +59,8 @@ func TestErrorf(t *testing.T) {
 			var buf bytes.Buffer
 			var exit int
 
-			defer mockAndLockStderr(&buf).Unlock()
-			defer mockAndLockExit(func(code int) { exit = code }).Unlock()
+			defer os.MockAndLockStderr(&buf).Unlock()
+			defer os.MockAndLockExit(func(code int) { exit = code }).Unlock()
 
 			// Act
 			errorf(test.have, test.args...)
@@ -112,7 +114,7 @@ func TestPrintln(t *testing.T) {
 			// Arrange
 			var buf bytes.Buffer
 
-			defer mockAndLockStdout(&buf).Unlock()
+			defer os.MockAndLockStdout(&buf).Unlock()
 
 			// Act
 			println(test.have)
@@ -410,12 +412,11 @@ func TestMain(t *testing.T) {
 			var exit int                    // record exit code
 
 			// mock io
-			defer mockAndLockStderr(&errBuf).Unlock()
-			defer mockAndLockStdout(&outBuf).Unlock()
+			defer os.MockAndLockStderr(&errBuf).Unlock()
+			defer os.MockAndLockStdout(&outBuf).Unlock()
 
 			// mock argv
-			defer mockAndLockSelf(test.self).Unlock()
-			defer mockAndLockArgs(test.args).Unlock()
+			defer os.MockAndLockArgs(test.self, test.args).Unlock()
 
 			// mock backend
 			defer mockAndLockBackend(func(format string, date time.Time) (string, error) {
@@ -440,7 +441,7 @@ func TestMain(t *testing.T) {
 			}).Unlock()
 
 			// mock exit
-			defer mockAndLockExit(func(code int) {
+			defer os.MockAndLockExit(func(code int) {
 				exitCalls++
 
 				exit = code

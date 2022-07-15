@@ -2,52 +2,33 @@ package main // import "github.com/norwd/ddate"
 
 import (
 	"fmt"
-	"io"
-	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
+
+	// This is a mocking wrapper over the "os" package in the standard lib.
+	"github.com/norwd/ddate/internal/os"
 )
 
 // defaultFormat is used if no format is explicitly given.
 const defaultFormat = "%A, %B %d, %Y YOLD"
 
-// Injectable dependencies that can be swapped out in testing.
-var (
-	// backend is the date formatting implementation.
-	backend = func(string, time.Time) (string, error) {
-		panic("backend not defined")
-	}
-
-	// exit is the exit call hook.
-	exit = os.Exit
-
-	// self is the invocation name.
-	self = filepath.Base(os.Args[0])
-
-	// args are the arguments passed to the system.
-	args = os.Args[1:]
-
-	// stderr is a writeable error stream.
-	stderr io.Writer = os.Stderr
-
-	// stdout is a writeable output stream.
-	stdout io.Writer = os.Stdout
-)
+// backend dependency to preform the date formatting, this allows for injection.
+var backend = func(string, time.Time) (string, error) { panic("backend not defined") }
 
 // errorf prints the formatted error message to stderr and exits with error 1.
 func errorf(format string, args ...interface{}) {
 	err := fmt.Sprintf(format, args...)
 
-	fmt.Fprintln(stderr, err)
+	fmt.Fprintln(os.Stderr, err)
 
-	exit(1)
+	os.Exit(1)
 }
 
 // println prints a line to the given output stream.
 func println(line string) {
-	fmt.Fprintln(stdout, line)
+	fmt.Fprintln(os.Stdout, line)
 }
 
 // parseDDMMYYYY parses strings representing a day, month, and year as a time.
@@ -75,6 +56,10 @@ func parseDDMMYYYY(dayStr, monthStr, yearStr string) (t time.Time, err error) {
 }
 
 func main() {
+	// self is the invocation name.
+	self := filepath.Base(os.Args[0])
+	args := os.Args[1:]
+
 	// Get the default values
 	format, date := defaultFormat, time.Now()
 
